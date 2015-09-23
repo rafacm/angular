@@ -1,4 +1,4 @@
-import {isBlank, isPresent} from 'angular2/src/core/facade/lang';
+import {isBlank, isPresent, isString} from 'angular2/src/core/facade/lang';
 import {CONST_EXPR} from 'angular2/src/core/facade/lang';
 import {ListWrapper, StringMapWrapper} from 'angular2/src/core/facade/collection';
 import {OpaqueToken} from 'angular2/src/core/di';
@@ -19,6 +19,18 @@ export const NG_VALIDATORS: OpaqueToken = CONST_EXPR(new OpaqueToken("NgValidato
 export class Validators {
   static required(control: modelModule.Control): StringMap<string, boolean> {
     return isBlank(control.value) || control.value == "" ? {"required": true} : null;
+  }
+
+  static minlength(length: number): Function {
+    return function(control: modelModule.Control): StringMap<string, boolean> {
+      return isPresent(control.value) && isString(control.value) && (control.value.length < length) ? { "minlength" : length } : null;
+    }
+  }
+
+  static maxlength(length: number): Function {
+    return function(control: modelModule.Control): StringMap<string, boolean> {
+      return isPresent(control.value) && isString(control.value) && (control.value.length > length) ? { "maxlength" : length } : null;
+    }
   }
 
   static nullValidator(c: any): StringMap<string, boolean> { return null; }

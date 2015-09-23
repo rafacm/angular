@@ -988,6 +988,8 @@ var NG_API = [
   'Validators#group()',
   'Validators#nullValidator()',
   'Validators#required()',
+  'Validators#minlength()',
+  'Validators#maxlength()',  
   'Validators',
   'View',
   'View.directives',

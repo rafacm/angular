@@ -32,6 +32,31 @@ export function main() {
          () => { expect(Validators.required(new Control("not empty"))).toEqual(null); });
     });
 
+    describe("minlength", () => {
+      it("should error on an empty string and minlegth = 1",
+          () => { expect(Validators.minlength(1)(new Control(""))).toEqual({"minlength": 1 }); });
+
+      it("should not error on a string longer than minlegth",
+          () => { expect(Validators.minlength(1)(new Control("abc"))).toEqual(null); });
+
+      it("should error on a string shorter than minlegth",
+          () => { expect(Validators.minlength(4)(new Control("abc"))).toEqual({"minlength": 4 }); });
+    });
+
+    describe("maxlength", () => {
+      it("should not error on an empty string and maxlegth = 1",
+          () => { expect(Validators.maxlength(1)(new Control(""))).toEqual(null); });
+
+      it("should not error on a string shorter than maxlegth",
+          () => { expect(Validators.maxlength(2)(new Control("a"))).toEqual(null); });
+
+      it("should not error on a string with length exactly than maxlegth",
+          () => { expect(Validators.maxlength(3)(new Control("abc"))).toEqual(null); });
+
+      it("should error on a string longer than maxlegth",
+          () => { expect(Validators.maxlength(2)(new Control("abc"))).toEqual({"maxlength": 2 }); });
+    });
+
     describe("compose", () => {
       it("should return a null validator when given null",
          () => { expect(Validators.compose(null)).toBe(Validators.nullValidator); });
